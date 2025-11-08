@@ -13,8 +13,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #8D7B68; /* dark primary */
+    background: radial-gradient(
+    circle at bottom left,
+    #C8B6A6 0%,
+    #A4907C 40%,
+    #8D7B68 80%
+  );
 }
+
 
 .login-image-container {
   flex: 1;
@@ -30,6 +36,21 @@
   transform: scale(2);
   margin-left: 350px;
 }
+
+.login-image {
+  opacity: 0.5;
+  transform: translateX(-150px) scale(2);
+  animation: slideIn 1.8s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(2);
+  }
+}
+
 
 /* Login Card */
 .login-card {
