@@ -16,9 +16,25 @@
   background: #8D7B68; /* dark primary */
 }
 
+.login-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-image {
+  width: 80%;
+  max-width: 400px;
+  border-radius: 20px;
+  transform: scale(2);
+  margin-left: 350px;
+}
+
 /* Login Card */
 .login-card {
   position: relative;
+  margin-right: 350px;
   z-index: 10;
   background: #C8B6A6cc; /* semi-transparent light brown */
   backdrop-filter: blur(8px);
@@ -32,9 +48,9 @@
 }
 
 .login-card h2 {
-  margin-bottom: 1.5rem;
-  font-size: 5.5rem;
-  font-style: oblique;
+  margin-bottom: 2.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
   color: #4a351fd7; /* primary dark */
 }
 
@@ -117,8 +133,8 @@
 
 .signup-link {
   margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #F1DEC9;
+  font-size: 1rem;
+  color: #fbebd9;
 }
 
 .signup-link a {
@@ -133,7 +149,7 @@
 
 
 
-/* ---------------- Dashboard ---------------- */
+/* ---------------- Welcome Dashboard ---------------- */
 .dashboard {
   padding: 2rem 2rem;
   min-height: 100vh;

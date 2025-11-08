@@ -74,7 +74,7 @@ const LineChart = ({ labels, tempData, humData, lightData, pressureData, selecte
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        labels: { color: '#4a351f' }
+        labels: { color: '#4a351f', font: { size: 16 } }
       },
       tooltip: {
         callbacks: {
@@ -90,16 +90,16 @@ const LineChart = ({ labels, tempData, humData, lightData, pressureData, selecte
     },
     scales: {
   x: {
-    title: { display: true, text: 'Time', color: '#4a351f' },
-    ticks: { color: '#4a351f' },
-    grid: { color: '#ccc' }
+    title: { display: true, text: 'Time', color: '#4a351f', font: { size: 20 } },
+    ticks: { color: '#4a351f' , font: {size: 12}},
+    grid: { color: '#ae9d85ff' }
   },
   yTemp: {
     type: 'linear',
     position: 'left',
     display: selectedSensors.includes('Temperature'),
-    title: { display: true, text: 'Temperature (°C)' },
-    ticks: { color: '#F9CF93', padding: 0 },
+    title: { display: true, text: 'Temperature (°C)', font: { size: 14 } },
+    ticks: { color: '#F9CF93', padding:10, font: { size: 16 } },
     grid: { drawOnChartArea: true },
     offset: true
   },
@@ -107,8 +107,8 @@ const LineChart = ({ labels, tempData, humData, lightData, pressureData, selecte
     type: 'linear',
     position: 'left',
     display: selectedSensors.includes('Humidity'),
-    title: { display: true, text: 'Humidity (%)' },
-    ticks: { color: '#F9E4C8', padding: 40 }, // offset labels so they don’t overlap
+    title: { display: true, text: 'Humidity (%)', font: { size: 14 } },
+    ticks: { color: '#F9E4C8', padding: 10, font: { size: 16 } }, // offset labels so they don’t overlap
     grid: { drawOnChartArea: false },
     offset: true
   },
@@ -116,8 +116,8 @@ const LineChart = ({ labels, tempData, humData, lightData, pressureData, selecte
     type: 'linear',
     position: 'left',
     display: selectedSensors.includes('Light'),
-    title: { display: true, text: 'Light (lx)' },
-    ticks: { color: '#FAEEE0', padding: 80 },
+    title: { display: true, text: 'Light (lx)' , font: { size: 14 }},
+    ticks: { color: '#FAEEE0', padding: -3, font: { size: 16 } },
     grid: { drawOnChartArea: false },
     offset: true
   },
@@ -125,8 +125,8 @@ const LineChart = ({ labels, tempData, humData, lightData, pressureData, selecte
     type: 'linear',
     position: 'left',
     display: selectedSensors.includes('Pressure'),
-    title: { display: true, text: 'Pressure (hPa)' },
-    ticks: { color: '#DBD0C0', padding: 120 },
+    title: { display: true, text: 'Pressure (hPa)' , font: { size: 14 }},
+    ticks: { color: '#e9e8e6ff', padding: -5, font: { size: 14 } },
     grid: { drawOnChartArea: false },
     offset: true
   }

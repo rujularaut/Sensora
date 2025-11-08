@@ -105,12 +105,16 @@ function App() {
   if (page === 'login') {
     return (
       <div className="login-page">
+        <div className="login-image-container">
+    <img src="/src/assets/SENSORA.png" alt="Login Illustration" className="login-image" />
+  </div>
+
         <div className="login-card">
-          <h2>Sensera</h2>
+          <h2>Log in to your account</h2>
           <form onSubmit={handleLogin}>
             <input type="email" placeholder="Email ID" value={email} onChange={e => setEmail(e.target.value)} required />
             <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
-            <button type="submit">Login</button>
+            <button type="submit">Log in</button>
           </form>
 
           <div className="divider">or</div>
