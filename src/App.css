@@ -430,3 +430,20 @@ header span {
     width: 80%;
   }
 }
+
+.back-btn {
+  background: #5c4c3b;
+  color: #fae6cf;
+  border: none;
+  border-radius: 20px;
+  padding: 0.7rem 1.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background: #fae6cfa4;
+  color: #5c4c3b;
+}

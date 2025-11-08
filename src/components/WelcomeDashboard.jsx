@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
 import SensorCard from './SensorCard.jsx';
 
-const WelcomeDashboard = ({ username, goToDashboard }) => {
+const WelcomeDashboard = ({ username, goToDashboard, goBack }) => {
   // List of available sensors with unique colors
   const availableSensors = [
-    { name: 'Temperature', color: '#F9CF93', active: false }, // orange/yellow
-    { name: 'Humidity', color: '#F9E4C8', active: false },    // light peach
-    { name: 'Light', color: '#FAEEE0', active: false },       // cream
-    { name: 'Pressure', color: '#DBD0C0', active: false },    // beige
+    { name: 'Temperature', color: '#F9CF93', active: false },
+    { name: 'Humidity', color: '#F9E4C8', active: false },
+    { name: 'Light', color: '#FAEEE0', active: false },
+    { name: 'Pressure', color: '#DBD0C0', active: false },
   ];
 
   const [sensors, setSensors] = useState(availableSensors);
 
-  // Toggle sensor selection
   const toggleSensor = (index) => {
     const updated = [...sensors];
     updated[index].active = !updated[index].active;
     setSensors(updated);
   };
 
-  // Filter selected sensors
   const selectedSensors = sensors.filter(s => s.active);
 
   return (
@@ -58,6 +56,15 @@ const WelcomeDashboard = ({ username, goToDashboard }) => {
         onClick={() => goToDashboard(selectedSensors)}
       >
         Go to Live Dashboard
+      </button>
+
+      {/* Back button at bottom-left */}
+      <button
+        className="back-btn"
+        onClick={goBack}
+        style={{ position: 'absolute', bottom: '20px', left: '20px' }}
+      >
+        ← Back
       </button>
     </div>
   );

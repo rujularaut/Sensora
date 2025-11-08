@@ -9,20 +9,24 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [selectedSensors, setSelectedSensors] = useState([]); // array of strings e.g. ['Temperature']
+  const [selectedSensors, setSelectedSensors] = useState([]); // array of strings
+
+  // Sensor states
   const [temp, setTemp] = useState('— °C');
   const [hum, setHum] = useState('— %');
+  const [light, setLight] = useState('— lx');
+  const [pressure, setPressure] = useState('— hPa');
   const [lastUpdate, setLastUpdate] = useState('—');
+
+  // Data arrays
   const [labels, setLabels] = useState([]);
   const [tempData, setTempData] = useState([]);
   const [humData, setHumData] = useState([]);
-  const [fullDates, setFullDates] = useState([]);
-  const [status, setStatus] = useState('connected');
-  const [light, setLight] = useState('— lx');
-  const [pressure, setPressure] = useState('— hPa');
   const [lightData, setLightData] = useState([]);
   const [pressureData, setPressureData] = useState([]);
+  const [fullDates, setFullDates] = useState([]);
 
+  const [status, setStatus] = useState('connected');
 
   // Format timestamp
   function formatDateLocal(date) {
@@ -37,36 +41,34 @@ function App() {
   }
 
   // Simulate sensor data
- function generateData() {
-  const now = new Date();
-  const tempVal = (20 + Math.random() * 10).toFixed(1);
-  const humVal = (40 + Math.random() * 20).toFixed(1);
-  const lightVal = (200 + Math.random() * 800).toFixed(0); // example lx
-  const pressureVal = (980 + Math.random() * 40).toFixed(1); // example hPa
-  return { tempVal, humVal, lightVal, pressureVal, timestamp: now };
-}
-
+  function generateData() {
+    const now = new Date();
+    const tempVal = (20 + Math.random() * 10).toFixed(1);
+    const humVal = (40 + Math.random() * 20).toFixed(1);
+    const lightVal = (200 + Math.random() * 800).toFixed(0);
+    const pressureVal = (980 + Math.random() * 40).toFixed(1);
+    return { tempVal, humVal, lightVal, pressureVal, timestamp: now };
+  }
 
   // Update live sensor data every 3s
   useEffect(() => {
     if (page !== 'dashboard') return;
 
     const interval = setInterval(() => {
-      const { tempVal, humVal, timestamp } = generateData();
+      const { tempVal, humVal, lightVal, pressureVal, timestamp } = generateData();
       const timeStr = timestamp.toTimeString().split(' ')[0];
 
       setTemp(tempVal + ' °C');
       setHum(humVal + ' %');
+      setLight(lightVal + ' lx');
+      setPressure(pressureVal + ' hPa');
       setLastUpdate(formatDateLocal(timestamp));
 
       setLabels(prev => [...prev.slice(-99), timeStr]);
       setTempData(prev => [...prev.slice(-99), tempVal]);
       setHumData(prev => [...prev.slice(-99), humVal]);
-      setLight(lightVal + ' lx');
-      setPressure(pressureVal + ' hPa');
       setLightData(prev => [...prev.slice(-99), lightVal]);
       setPressureData(prev => [...prev.slice(-99), pressureVal]);
-
       setFullDates(prev => [...prev.slice(-99), formatDateLocal(timestamp)]);
     }, 3000);
 
@@ -76,18 +78,15 @@ function App() {
   // Login submit
   function handleLogin(e) {
     e.preventDefault();
-    if (email.trim() !== '' && password.trim() !== '') {
+    if (email.trim() && password.trim()) {
       setUsername(email.split('@')[0]);
       setPage('welcome');
-    } else {
-      alert("Please enter email and password");
-    }
+    } else alert("Please enter email and password");
   }
 
   // Google login (mock)
   function handleGoogleLogin() {
-    const mockUsername = "GoogleUser";
-    setUsername(mockUsername);
+    setUsername("GoogleUser");
     setPage('welcome');
   }
 
@@ -97,7 +96,6 @@ function App() {
       alert("Please select at least one sensor");
       return;
     }
-    // store only sensor names (strings)
     const sensorNames = selected.map(s => s.name);
     setSelectedSensors(sensorNames);
     setPage('dashboard');
@@ -110,28 +108,13 @@ function App() {
         <div className="login-card">
           <h2>Sensera</h2>
           <form onSubmit={handleLogin}>
-            <input 
-              type="email" 
-              placeholder="Email ID" 
-              value={email} 
-              onChange={e => setEmail(e.target.value)}
-              required
-            />
-            <input 
-              type="password" 
-              placeholder="Password" 
-              value={password} 
-              onChange={e => setPassword(e.target.value)}
-              required
-            />
+            <input type="email" placeholder="Email ID" value={email} onChange={e => setEmail(e.target.value)} required />
+            <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
             <button type="submit">Login</button>
           </form>
 
           <div className="divider">or</div>
-
-          <button className="google-btn" onClick={handleGoogleLogin}>
-            Sign in with Google
-          </button>
+          <button className="google-btn" onClick={handleGoogleLogin}>Sign in with Google</button>
 
           <div className="signup-link">
             Don't have an account? <a href="#">Sign up</a>
@@ -141,42 +124,57 @@ function App() {
     );
   }
 
-  if (page === 'welcome') {
-    return (
-      <WelcomeDashboard
-        username={username}
-        goToDashboard={goToDashboard}
-      />
-    );
-  }
-
-  // Dashboard render
+// WelcomeDashboard render
+if (page === 'welcome') {
   return (
-    <div className="dashboard">
-      <header>
-        <h2>Sensera — Live Dashboard</h2>
-        <div>Welcome, {username} | Status: <span>{status}</span></div>
-      </header>
-
-      <div className="cards">
-        {selectedSensors.includes('Temperature') && <SensorCard title="Temperature" value={temp} />}
-        {selectedSensors.includes('Humidity') && <SensorCard title="Humidity" value={hum} />}
-        {selectedSensors.includes('Last Update') && <SensorCard title="Last Update" value={lastUpdate} />}
-        {selectedSensors.includes('Light') && <SensorCard title="Light" value="—" />}
-        {selectedSensors.includes('Pressure') && <SensorCard title="Pressure" value="—" />}
-      </div>
-
-      <div className="chart-container">
-        <LineChart
-          labels={labels}
-          tempData={selectedSensors.includes('Temperature') ? tempData : []}
-          humData={selectedSensors.includes('Humidity') ? humData : []}
-          selectedSensors={selectedSensors}
-          fullDates={fullDates}
-        />
-      </div>
-    </div>
+    <WelcomeDashboard
+      username={username}
+      goToDashboard={goToDashboard}
+      goBack={() => setPage('login')} // pass back function
+    />
   );
+}
+
+// Dashboard render
+return (
+  <div className="dashboard">
+    <header>
+      <h2>Sensera — Live Dashboard</h2>
+      <div>
+        Welcome, {username} | Status: <span>{status}</span>
+      </div>
+    </header>
+
+    <div className="cards">
+      {selectedSensors.includes('Temperature') && <SensorCard title="Temperature" value={temp} />}
+      {selectedSensors.includes('Humidity') && <SensorCard title="Humidity" value={hum} />}
+      {selectedSensors.includes('Last Update') && <SensorCard title="Last Update" value={lastUpdate} />}
+      {selectedSensors.includes('Light') && <SensorCard title="Light" value={light} />}
+      {selectedSensors.includes('Pressure') && <SensorCard title="Pressure" value={pressure} />}
+    </div>
+
+    <div className="chart-container">
+      <LineChart
+        labels={labels}
+        tempData={selectedSensors.includes('Temperature') ? tempData : []}
+        humData={selectedSensors.includes('Humidity') ? humData : []}
+        lightData={selectedSensors.includes('Light') ? lightData : []}
+        pressureData={selectedSensors.includes('Pressure') ? pressureData : []}
+        selectedSensors={selectedSensors}
+        fullDates={fullDates}
+      />
+    </div>
+    {/* Back button at bottom-left */}
+    <button
+      className="back-btn"
+      onClick={() => setPage('welcome')}
+      style={{ position: 'absolute', bottom: '20px', left: '20px' }}
+    >
+      ← Back
+    </button>
+  </div>
+);
+
 }
 
 export default App;
