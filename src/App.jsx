@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import SensorCard from './components/SensorCard.jsx';
 import LineChart from './components/LineChart.jsx';
+import WelcomeDashboard from './components/WelcomeDashboard.jsx';
 import './App.css';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [page, setPage] = useState('login'); // 'login' | 'welcome' | 'dashboard'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState(''); // For display after login
-
+  const [username, setUsername] = useState('');
+  const [selectedSensors, setSelectedSensors] = useState([]); // array of strings e.g. ['Temperature']
   const [temp, setTemp] = useState('— °C');
   const [hum, setHum] = useState('— %');
   const [lastUpdate, setLastUpdate] = useState('—');
@@ -17,6 +18,11 @@ function App() {
   const [humData, setHumData] = useState([]);
   const [fullDates, setFullDates] = useState([]);
   const [status, setStatus] = useState('connected');
+  const [light, setLight] = useState('— lx');
+  const [pressure, setPressure] = useState('— hPa');
+  const [lightData, setLightData] = useState([]);
+  const [pressureData, setPressureData] = useState([]);
+
 
   // Format timestamp
   function formatDateLocal(date) {
@@ -31,16 +37,19 @@ function App() {
   }
 
   // Simulate sensor data
-  function generateData() {
-    const now = new Date();
-    const tempVal = (20 + Math.random() * 10).toFixed(1);
-    const humVal = (40 + Math.random() * 20).toFixed(1);
-    return { tempVal, humVal, timestamp: now };
-  }
+ function generateData() {
+  const now = new Date();
+  const tempVal = (20 + Math.random() * 10).toFixed(1);
+  const humVal = (40 + Math.random() * 20).toFixed(1);
+  const lightVal = (200 + Math.random() * 800).toFixed(0); // example lx
+  const pressureVal = (980 + Math.random() * 40).toFixed(1); // example hPa
+  return { tempVal, humVal, lightVal, pressureVal, timestamp: now };
+}
 
-  // Update sensor data every 3 seconds
+
+  // Update live sensor data every 3s
   useEffect(() => {
-    if (!loggedIn) return;
+    if (page !== 'dashboard') return;
 
     const interval = setInterval(() => {
       const { tempVal, humVal, timestamp } = generateData();
@@ -53,32 +62,49 @@ function App() {
       setLabels(prev => [...prev.slice(-99), timeStr]);
       setTempData(prev => [...prev.slice(-99), tempVal]);
       setHumData(prev => [...prev.slice(-99), humVal]);
+      setLight(lightVal + ' lx');
+      setPressure(pressureVal + ' hPa');
+      setLightData(prev => [...prev.slice(-99), lightVal]);
+      setPressureData(prev => [...prev.slice(-99), pressureVal]);
+
       setFullDates(prev => [...prev.slice(-99), formatDateLocal(timestamp)]);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [loggedIn]);
+  }, [page]);
 
-  // Handle login submit
+  // Login submit
   function handleLogin(e) {
     e.preventDefault();
     if (email.trim() !== '' && password.trim() !== '') {
-      setUsername(email.split('@')[0]); // Simple username display
-      setLoggedIn(true);
+      setUsername(email.split('@')[0]);
+      setPage('welcome');
     } else {
       alert("Please enter email and password");
     }
   }
 
-  // Handle Google login (mock)
+  // Google login (mock)
   function handleGoogleLogin() {
     const mockUsername = "GoogleUser";
     setUsername(mockUsername);
-    setLoggedIn(true);
+    setPage('welcome');
   }
 
-  // ---------------- Render Login Page ----------------
-  if (!loggedIn) {
+  // Handle sensors selected from WelcomeDashboard
+  function goToDashboard(selected) {
+    if (!selected || selected.length === 0) {
+      alert("Please select at least one sensor");
+      return;
+    }
+    // store only sensor names (strings)
+    const sensorNames = selected.map(s => s.name);
+    setSelectedSensors(sensorNames);
+    setPage('dashboard');
+  }
+
+  // ---------- Renders ----------
+  if (page === 'login') {
     return (
       <div className="login-page">
         <div className="login-card">
@@ -115,7 +141,16 @@ function App() {
     );
   }
 
-  // ---------------- Render Dashboard ----------------
+  if (page === 'welcome') {
+    return (
+      <WelcomeDashboard
+        username={username}
+        goToDashboard={goToDashboard}
+      />
+    );
+  }
+
+  // Dashboard render
   return (
     <div className="dashboard">
       <header>
@@ -124,17 +159,20 @@ function App() {
       </header>
 
       <div className="cards">
-        <SensorCard title="Temperature" value={temp} />
-        <SensorCard title="Humidity" value={hum} />
-        <SensorCard title="Last Update" value={lastUpdate} />
+        {selectedSensors.includes('Temperature') && <SensorCard title="Temperature" value={temp} />}
+        {selectedSensors.includes('Humidity') && <SensorCard title="Humidity" value={hum} />}
+        {selectedSensors.includes('Last Update') && <SensorCard title="Last Update" value={lastUpdate} />}
+        {selectedSensors.includes('Light') && <SensorCard title="Light" value="—" />}
+        {selectedSensors.includes('Pressure') && <SensorCard title="Pressure" value="—" />}
       </div>
 
       <div className="chart-container">
-        <LineChart 
-          labels={labels} 
-          tempData={tempData} 
-          humData={humData} 
-          fullDates={fullDates} 
+        <LineChart
+          labels={labels}
+          tempData={selectedSensors.includes('Temperature') ? tempData : []}
+          humData={selectedSensors.includes('Humidity') ? humData : []}
+          selectedSensors={selectedSensors}
+          fullDates={fullDates}
         />
       </div>
     </div>

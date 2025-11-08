@@ -1,0 +1,187 @@
+
+/* ---------------- Welcome Dashboard ---------------- */
+.welcome-page {
+  height: 100vh;
+  width: 100vw;
+  background: #cab8a4; /* page background */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+  gap: 2rem;
+}
+
+.welcome-page h2 {
+  font-size: 4.5rem;
+  color: #4c3d2cbf; /* dark warm heading */
+  margin-bottom: 1rem;
+}
+
+.welcome-page p {
+  font-size: 1.9rem;
+  color: #5c4c3baf; /* warm paragraph */
+}
+
+/* Cards container */
+.welcome-page .cards {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Go to Dashboard button */
+.go-dashboard-btn {
+  padding: 1rem 2rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fae6cf; /* light text */
+  background: #5c4c3b; /* dark warm button */
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 1rem;
+}
+
+.go-dashboard-btn:hover:enabled {
+  background: #fae6cfa4; /* lighter hover */
+  color: #5c4c3b;
+}
+
+.go-dashboard-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sensor Cards overrides for Welcome Dashboard */
+.welcome-page .sensor-card {
+  background: #DBD0C033; /* subtle transparent */
+  padding: 1.2rem;
+  border-radius: 20px;
+  min-width: 180px;
+  flex: 1 1 20%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  transition: transform 0.2s, background 0.3s;
+  cursor: pointer;
+}
+
+.welcome-page .sensor-card:hover {
+  transform: translateY(-5px);
+  background: #DBD0C088;
+}
+
+.welcome-page .sensor-card.active {
+  border: 3px solid #fae6cf;
+}
+
+.welcome-page .sensor-card h3 {
+  font-size: 1.2rem;
+  color: #4c3d2ce4;
+}
+
+.welcome-page .sensor-card p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #5c4c3b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .welcome-page .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .welcome-page .sensor-card {
+    width: 80%;
+  }
+}
+
+/* Theme Preview Section */
+.theme-preview {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.theme-card {
+  width: 180px;
+  height: 120px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2a2e31; /* neutral text */
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+
+.theme-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+
+/* Sensor selection grid */
+.sensor-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Sensor cards with gradients */
+.sensor-card.selectable {
+  cursor: pointer;
+  min-width: 150px;
+  flex: 1 1 150px;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.3s, filter 0.3s;
+  color: #2a2e31;
+}
+
+.sensor-card.selectable:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  filter: brightness(1.1);
+}
+
+.sensor-card.selectable.active {
+  border: 3px solid #8D7B68; /* subtle outline when active */
+  filter: brightness(1.2);
+}
+
+.sensor-card h3 {
+  font-size: 1.2rem;
+}
+
+.sensor-card p {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .sensor-selection {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sensor-card.selectable {
+    width: 80%;
+  }
+}
