@@ -8,8 +8,8 @@ const LineChart = ({ labels, tempData, humData, fullDates }) => {
   const data = {
     labels,
     datasets: [
-      { label: 'Temperature (°C)', data: tempData, borderColor: 'red', tension: 0.3 },
-      { label: 'Humidity (%)', data: humData, borderColor: 'blue', tension: 0.3 }
+      { label: 'Temperature (°C)', data: tempData, borderColor: 'black', tension: 0.3 },
+      { label: 'Humidity (%)', data: humData, borderColor: 'white', tension: 0.3 }
     ]
   };
 

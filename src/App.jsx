@@ -5,7 +5,9 @@ import './App.css';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState(''); // For display after login
 
   const [temp, setTemp] = useState('— °C');
   const [hum, setHum] = useState('— %');
@@ -16,6 +18,7 @@ function App() {
   const [fullDates, setFullDates] = useState([]);
   const [status, setStatus] = useState('connected');
 
+  // Format timestamp
   function formatDateLocal(date) {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2,'0');
@@ -27,6 +30,7 @@ function App() {
     return `${day}/${month}/${year} ${hours}:${mins}:${secs}`;
   }
 
+  // Simulate sensor data
   function generateData() {
     const now = new Date();
     const tempVal = (20 + Math.random() * 10).toFixed(1);
@@ -34,12 +38,14 @@ function App() {
     return { tempVal, humVal, timestamp: now };
   }
 
+  // Update sensor data every 3 seconds
   useEffect(() => {
     if (!loggedIn) return;
 
     const interval = setInterval(() => {
       const { tempVal, humVal, timestamp } = generateData();
       const timeStr = timestamp.toTimeString().split(' ')[0];
+
       setTemp(tempVal + ' °C');
       setHum(humVal + ' %');
       setLastUpdate(formatDateLocal(timestamp));
@@ -53,40 +59,68 @@ function App() {
     return () => clearInterval(interval);
   }, [loggedIn]);
 
-  // Login form submit
+  // Handle login submit
   function handleLogin(e) {
     e.preventDefault();
-    if (username.trim() !== '') setLoggedIn(true);
+    if (email.trim() !== '' && password.trim() !== '') {
+      setUsername(email.split('@')[0]); // Simple username display
+      setLoggedIn(true);
+    } else {
+      alert("Please enter email and password");
+    }
   }
 
-  // ---------- Conditional Render ----------
+  // Handle Google login (mock)
+  function handleGoogleLogin() {
+    const mockUsername = "GoogleUser";
+    setUsername(mockUsername);
+    setLoggedIn(true);
+  }
+
+  // ---------------- Render Login Page ----------------
   if (!loggedIn) {
     return (
       <div className="login-page">
         <div className="login-card">
-          <h2>Welcome to Tiny Thingspeak</h2>
+          <h2>Sensera</h2>
           <form onSubmit={handleLogin}>
             <input 
-              type="text" 
-              placeholder="Enter your name" 
-              value={username} 
-              onChange={e => setUsername(e.target.value)}
+              type="email" 
+              placeholder="Email ID" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)}
+              required
             />
             <button type="submit">Login</button>
           </form>
+
+          <div className="divider">or</div>
+
+          <button className="google-btn" onClick={handleGoogleLogin}>
+            Sign in with Google
+          </button>
+
+          <div className="signup-link">
+            Don't have an account? <a href="#">Sign up</a>
+          </div>
         </div>
       </div>
     );
   }
 
-  // ---------- Dashboard after login ----------
+  // ---------------- Render Dashboard ----------------
   return (
     <div className="dashboard">
       <header>
-        <h2>Tiny Thingspeak — Live</h2>
-        <div className="user-info">
-          Welcome, <strong>{username}</strong> | Status: <span className={`status ${status}`}>{status}</span>
-        </div>
+        <h2>Sensera — Live Dashboard</h2>
+        <div>Welcome, {username} | Status: <span>{status}</span></div>
       </header>
 
       <div className="cards">
@@ -96,7 +130,12 @@ function App() {
       </div>
 
       <div className="chart-container">
-        <LineChart labels={labels} tempData={tempData} humData={humData} fullDates={fullDates} />
+        <LineChart 
+          labels={labels} 
+          tempData={tempData} 
+          humData={humData} 
+          fullDates={fullDates} 
+        />
       </div>
     </div>
   );

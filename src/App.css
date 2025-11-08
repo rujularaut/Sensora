@@ -1,122 +1,208 @@
-/* ---------- GLOBAL ---------- */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
-body, html {
-  height: 100%;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-}
-
-/* ---------- LOGIN PAGE ---------- */
+/* ---------------- Login Page ---------------- */
 .login-page {
   height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #2a2e31; 
 }
 
+/* Login Card */
 .login-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 40px 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 10;
+  background: #afb8bdde; /* semi-transparent gray */
+  backdrop-filter: blur(8px);
+  padding: 4rem 5rem;
+  border-radius: 30px;
   text-align: center;
-  width: 350px;
-  animation: fadeIn 0.6s ease-in-out;
+  color: #7b7979;
+  box-shadow: 0 18px 40px rgba(26, 25, 25, 0.2);
+  max-width: 550px;
+  width: 90%;
 }
 
 .login-card h2 {
-  color: #fff;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+  margin-bottom: 1.5rem;
+  font-size: 5.5rem;
+  font-style: oblique;
+  color: #2a2e31;
 }
 
+/* Inputs */
 .login-card input {
   width: 100%;
-  padding: 12px 15px;
-  margin: 10px 0;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
   border-radius: 10px;
   border: none;
   outline: none;
-  font-size: 1rem;
-  background: rgba(255,255,255,0.2);
-  color: #fff;
+  font-size: 1.1rem;
+  color: #2a2e31;
+  background: #d8dde0de;
+  transition: 0.2s;
 }
 
-.login-card input::placeholder {
-  color: #f0f0f0;
+.login-card input:focus {
+  box-shadow: 0 0 8px #5d6264de;
 }
 
-.login-card button {
+/* Login button */
+.login-card button[type="submit"] {
   width: 100%;
-  padding: 12px;
-  margin-top: 15px;
+  padding: 0.8rem 0;
   border: none;
   border-radius: 10px;
-  background: #ff6a00;
+  background: #2a2e31;
+  color: #d8dde0de;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 1rem;
+}
+
+.login-card button[type="submit"]:hover {
+  background: #5d6264de;
+}
+
+/* Divider */
+.divider {
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  color: #505050;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: #777575;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+/* Google Button */
+.google-btn {
+  width: 100%;
+  padding: 0.8rem 0;
+  border: none;
+  border-radius: 10px;
+  background: #2a2e31bb;
   color: #fff;
-  font-size: 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.login-card button:hover {
-  background: #ff9c00;
-}
-
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(-20px);}
-  to {opacity:1; transform: translateY(0);}
-}
-
-/* ---------- DASHBOARD ---------- */
-.dashboard {
-  padding: 20px 40px;
+.google-btn:hover {
+  background: #2a2e31;
   color: #fff;
+}
+
+/* Signup link */
+.signup-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #2f2e2e;
+}
+
+.signup-link a {
+  color: #2a2e31;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* ---------------- Dashboard ---------------- */
+.dashboard {
+  padding: 2rem 39.5rem;
+  min-height: 100vh;
+  background: #2a2e31;
+  color: #d8dde0;
 }
 
 header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+  align-items: right;
+  margin-bottom: 5rem;
+  font-size: 1.5rem;
 }
 
 header h2 {
-  font-size: 1.8rem;
-  text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+  font-size: 2rem;
+  color: #afb8bd;
 }
 
-.user-info {
-  font-size: 1rem;
-}
-
-.status {
+header span {
   font-weight: bold;
+  color: #d8dde0de;
 }
 
-.status.connected {
-  color: #0f0;
-}
-
-/* ---------- SENSOR CARDS ---------- */
+/* Cards */
 .cards {
   display: flex;
-  gap: 20px;
+  gap: 1rem;
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 }
 
-/* ---------- CHART ---------- */
+/* Chart container */
 .chart-container {
-  background: rgba(255,255,255,0.05);
-  padding: 20px;
+  background: #afb8bd; /* subtle transparent card */
+  padding: 7rem;
   border-radius: 15px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(4px);
+}
+
+/* ---------------- SensorCard Styling ---------------- */
+.sensor-card {
+  background: #afb8bd33; /* light transparent gray */
+  padding: 1.5rem;
+  border-radius: 20px;
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.sensor-card:hover {
+  transform: translateY(-5px);
+}
+
+.sensor-card h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #7b7979;
+}
+
+.sensor-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2a2e31;
 }
